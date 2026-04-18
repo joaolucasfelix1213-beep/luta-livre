@@ -1,0 +1,459 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifa - Inscrição Campeonato de Luta Livre</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #d4af37;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            color: #ccc;
+        }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .prizes-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #d4af37;
+        }
+
+        .prizes-section h2 {
+            color: #d4af37;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .prize-item {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #d4af37;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .prize-item strong {
+            color: #d4af37;
+            font-size: 1.1em;
+        }
+
+        .prize-item p {
+            color: #ccc;
+            margin-top: 5px;
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-section h2 {
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+
+        .cartela-title {
+            color: #1a1a1a;
+            font-size: 1.3em;
+            margin: 25px 0 15px 0;
+            font-weight: 600;
+        }
+
+        .cartela {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            border: 3px solid #d4af37;
+        }
+
+        .numero-btn {
+            padding: 15px;
+            border: 2px solid #333;
+            background: white;
+            color: #333;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95em;
+            position: relative;
+        }
+
+        .numero-btn:hover:not(.indisponivel) {
+            border-color: #d4af37;
+            transform: scale(1.05);
+        }
+
+        .numero-btn.selecionado {
+            background: #d4af37;
+            color: white;
+            border-color: #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .numero-btn.indisponivel {
+            background: #ccc;
+            color: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .numero-btn.indisponivel::after {
+            content: '✕';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em;
+            color: red;
+            font-weight: bold;
+        }
+
+        .numeros-selecionados {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            min-height: 50px;
+            border: 2px solid #d4af37;
+        }
+
+        .numeros-selecionados h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .numeros-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .numero-tag {
+            background: #d4af37;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .numero-tag button {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .numero-tag button:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .valor-total {
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .valor-total p {
+            font-size: 0.95em;
+            margin-bottom: 8px;
+        }
+
+        .valor-total h3 {
+            font-size: 2em;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #f5c6cb;
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #d4af37;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .cartela {
+                grid-template-columns: repeat(10, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .form-section {
+                padding: 20px;
+            }
+
+            .cartela {
+                grid-template-columns: repeat(10, 1fr);
+                gap: 5px;
+            }
+
+            .numero-btn {
+                padding: 10px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎰 RIFA - CAMPEONATO DE LUTA LIVRE</h1>
+            <p>Escolha seus números e concorra aos prêmios incríveis!</p>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- SEÇÃO DE PRÊMIOS -->
+            <div class="prizes-section">
+                <h2>🏆 PRÊMIOS</h2>
+                
+                <div class="prize-item">
+                    <strong>1º PRÊMIO:</strong>
+                    <p>Jogo no Copo</p>
+                </div>
+
+                <div class="prize-item">
+                    <strong>2º PRÊMIO:</strong>
+                    <p>50 reais em dinheiro</p>
+                </div>
+
+                <div class="prize-item">
+                    <strong>3º PRÊMIO:</strong>
+                    <p>Corte de Cabelo Masculino</p>
+                </div>
+
+                <div class="prize-item">
+                    <strong>4º PRÊMIO:</strong>
+                    <p>Pacote de Refrigerante</p>
+                </div>
+
+                <div class="prize-item">
+                    <strong>5º PRÊMIO:</strong>
+                    <p>Liquidificador</p>
+                </div>
+
+                <div class="prize-item" style="background: rgba(212, 175, 55, 0.2); border-left-color: #d4af37; margin-top: 20px;">
+                    <strong style="font-size: 1.2em;">💰 VALOR</strong>
+                    <p style="font-size: 1.3em; color: #d4af37;">Cada número custa R$ 2,00</p>
+                </div>
+
+                <div class="prize-item" style="background: rgba(212, 175, 55, 0.2); border-left-color: #d4af37;">
+                    <strong>📅 SORTEIO</strong>
+                    <p>08 de Maio no Instagram @ProjetoHSTeam</p>
+                </div>
+            </div>
+
+            <!-- SEÇÃO DE FORMULÁRIO -->
+            <div class="form-section">
+                <h2>Preencha seus dados</h2>
+
+                <div class="success-message" id="successMessage">
+                    ✓ Inscrição enviada com sucesso! Confira seu email.
+                </div>
+
+                <div class="error-message" id="errorMessage">
+                    ✗ Erro ao enviar. Selecione pelo menos um número e preencha todos os campos!
+                </div>
+
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 10px; color: #333;">Enviando inscrição...</p>
+                </div>
+
+                <form id="rifaForm">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo *</label>
+                        <input type="text" id="nome" name="nome" required placeholder="Seu nome completo">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefone">Número de Telefone *</label>
+                        <input type="tel" id="telefone" name="telefone" required placeholder="(11) 99999-9999">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pix">Chave PIX *</label>
+                        <input type="text" id="pix" name="pix" required placeholder="Sua chave PIX (CPF, email, telefone ou aleatória)">
+                    </div>
+
+                    <div class="cartela-title">Selecione seus números:</div>
+                    <div class="cartela" id="cartela"></div>
+
+                    <div class="numeros-selecionados">
+                        <h4>Números Selecionados:</h4>
+                        <div class="numeros-list" id="numerosSelecionados">
+                            <p style="color: #999;">Nenhum número selecionado</p>
+                        </div>
+                    </div>
+
+                    <div class="valor-total">
+                        <p>Valor Total:</p>
+                        <h3>R$ <span id="valorTotal">0,00</span></h3>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Confirmar Inscrição</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const numeros = [
+            401, 402, 403, 404, 405, 406, 407, 408, 409, 410,
+            411, 412, 413, 414, 415, 416, 417, 418, 419, 420,
+            421, 422, 423, 424, 425, 426, 427, 428, 429, 430,
+            431, 432, 433, 434, 435, 436, 437, 438, 439, 440,
+            441, 442, 443, 444, 445, 446, 447, 448, 449, 450,
+            451, 452, 453, 454, 455, 456, 457, 458, 459, 460,
+            461, 462, 463, 464, 465, 466, 467, 468, 469, 470,
+            471, 472, 473,
